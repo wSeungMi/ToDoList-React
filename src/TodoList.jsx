@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 const TodoList = () => {
+  const [todo, setTodo] = useState([
+    { id: 1, content: '자바스크립트 공부하기', done: false },
+    { id: 2, content: '리액트 투두 만들기', done: false },
+  ]);
+  const [taskText, setTaskText] = useState('');
+
+  const handleAddTodo = () => {
+    setTodo([...todo, { id: Math.random(), content: taskText, done: false }]);
+    setTaskText('');
+  };
+
   return (
     <div className="w-full min-h-screen bg-gradient-purple flex flex-col justify-center items-center">
       <section className="min-w-[600px] h-[540px] my-0 mx-auto py-7 px-8 bg-white border rounded-3xl">
@@ -12,40 +23,48 @@ const TodoList = () => {
           <input
             type="text"
             placeholder="할일을 입력해주세요."
+            value={taskText}
+            onChange={(e) => setTaskText(e.target.value)}
             className="flex-1 p-5  font-LINESeedKR-Rg bg-transparent placeholder:text-gray-500"
           />
           <button
-            type="button"
+            type="submit"
+            onClick={handleAddTodo}
             className="w-[90px] text-white bg-[#9070c0] rounded-3xl hover:bg-[#584278]"
           >
             등록하기
           </button>
         </div>
         <ul id="todo_list" className="pt-1 px-3.5 pb-1.5">
-          <li className="p-1.5 text-base cursor-pointer select-none flex justify-between items-center">
-            <div className="flex items-center">
-              <div className="w-5 h-5 bg-checkbox_off rounded-[50%] cursor-pointer bg-cover"></div>
-              {/* TODO: 할일 완료 기능 구현시 사용 예정 */}
-              {/* <div className="w-5 h-5 bg-checkbox_on rounded-[50%] cursor-pointer bg-cover relative"></div> */}
-              <span className="ml-3">자바스크립트 공부</span>
-            </div>
+          {todo.map((list) => (
+            <li
+              key={list.id}
+              className="p-1.5 text-base cursor-pointer select-none flex justify-between items-center"
+            >
+              <div className="flex items-center">
+                <div className="w-5 h-5 bg-checkbox_off rounded-[50%] cursor-pointer bg-cover"></div>
+                {/* TODO: 할일 완료 기능 구현시 사용 예정 */}
+                {/* <div className="w-5 h-5 bg-checkbox_on rounded-[50%] cursor-pointer bg-cover relative"></div> */}
+                <span className="ml-3">{list.content}</span>
+              </div>
 
-            <div className="flex content-center items-center pl-4">
-              <button className="cursor-pointer pl-4">
-                <FontAwesomeIcon
-                  icon={faPenToSquare}
-                  className="hover:text-zinc-500"
-                />
-              </button>
-              <button className="cursor-pointer pl-3">
-                <FontAwesomeIcon
-                  icon={faXmark}
-                  size="xl"
-                  className="hover:text-zinc-500"
-                />
-              </button>
-            </div>
-          </li>
+              <div className="flex content-center items-center pl-4">
+                <button className="cursor-pointer pl-4">
+                  <FontAwesomeIcon
+                    icon={faPenToSquare}
+                    className="hover:text-zinc-500"
+                  />
+                </button>
+                <button className="cursor-pointer pl-3">
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                    size="xl"
+                    className="hover:text-zinc-500"
+                  />
+                </button>
+              </div>
+            </li>
+          ))}
         </ul>
       </section>
     </div>
