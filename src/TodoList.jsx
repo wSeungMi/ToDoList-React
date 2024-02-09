@@ -15,6 +15,11 @@ const TodoList = () => {
     setTaskText('');
   };
 
+  const handleDeleteTodo = (delId) => {
+    const filteredData = todo.filter((item) => item.id != delId);
+    setTodo(filteredData);
+  };
+
   return (
     <div className="w-full min-h-screen bg-gradient-purple flex flex-col justify-center items-center">
       <section className="min-w-[600px] h-[540px] my-0 mx-auto py-7 px-8 bg-white border rounded-3xl">
@@ -56,7 +61,10 @@ const TodoList = () => {
                     className="hover:text-zinc-500"
                   />
                 </button>
-                <button className="cursor-pointer pl-3">
+                <button
+                  className="cursor-pointer pl-3"
+                  onClick={() => handleDeleteTodo(list.id)}
+                >
                   <FontAwesomeIcon
                     icon={faXmark}
                     size="xl"
