@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,7 +11,7 @@ const TodoList = () => {
   const [taskText, setTaskText] = useState('');
 
   const handleAddTodo = () => {
-    setTodo([...todo, { id: Math.random(), content: taskText, done: false }]);
+    setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
     setTaskText('');
   };
 
