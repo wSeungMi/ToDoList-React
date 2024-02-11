@@ -15,6 +15,14 @@ const TodoList = () => {
     setTaskText('');
   };
 
+  const handleKeyDown = (e) => {
+    if (e.nativeEvent.isComposing) return;
+    if (e.key === 'Enter') {
+      setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
+      setTaskText('');
+    }
+  };
+
   const handleDeleteTodo = (delId) => {
     const filteredData = todo.filter((item) => item.id != delId);
     setTodo(filteredData);
@@ -31,6 +39,7 @@ const TodoList = () => {
             placeholder="할일을 입력해주세요."
             value={taskText}
             onChange={(e) => setTaskText(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="flex-1 p-5  font-LINESeedKR-Rg bg-transparent placeholder:text-gray-500"
           />
           <button
