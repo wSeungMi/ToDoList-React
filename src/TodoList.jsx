@@ -18,6 +18,10 @@ const TodoList = () => {
   const [updatedContent, setUpdatedContent] = useState('');
 
   const handleAddTodo = () => {
+    if (!taskText) {
+      alert('할일을 입력해주세요🙌!');
+      return;
+    }
     setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
     setTaskText('');
   };
@@ -36,6 +40,10 @@ const TodoList = () => {
   };
 
   const handleUpdateTodo = (updatedId) => {
+    if (!updatedContent) {
+      alert('할일을 입력해주세요🙌!');
+      return;
+    }
     const updatedTodo = todo.map((item) => {
       if (item.id === updatedId) {
         return { ...item, content: updatedContent };
@@ -47,11 +55,17 @@ const TodoList = () => {
   };
 
   const handleEdtingReset = () => {
+    const isConfirm = window.confirm('수정을 취소하시겠습니까?');
+    if (!isConfirm) return;
+
     setUpdatedContent('');
     setEditingId('');
   };
 
   const handleDeleteTodo = (delId) => {
+    const isConfirm = window.confirm('정말 삭제하시겠습니까?');
+    if (!isConfirm) return;
+
     const filteredData = todo.filter((item) => item.id != delId);
     setTodo(filteredData);
   };
