@@ -11,7 +11,7 @@ import {
 const TodoList = () => {
   const [todo, setTodo] = useState([
     { id: 1, content: '자바스크립트 공부하기', done: false },
-    { id: 2, content: '리액트 투두 만들기', done: false },
+    { id: 2, content: '리액트 투두 만들기', done: true },
   ]);
   const [taskText, setTaskText] = useState('');
   const [editingId, setEditingId] = useState('');
@@ -74,6 +74,16 @@ const TodoList = () => {
 
     const filteredData = todo.filter((item) => item.id != delId);
     setTodo(filteredData);
+  };
+
+  const handlecompletedTodo = (doneId) => {
+    const isCompleted = todo.map((item) => {
+      if (item.id === doneId) {
+        return { ...item, done: !item.done };
+      }
+      return item;
+    });
+    setTodo(isCompleted);
   };
 
   return (
@@ -139,10 +149,15 @@ const TodoList = () => {
                 ) : (
                   <>
                     <div className="flex flex-row">
-                      <div className="w-5 h-5 bg-checkbox_off rounded-[50%] cursor-pointer bg-cover"></div>
-                      {/* TODO: 할일 완료 기능 구현시 사용 예정 */}
-                      {/* <div className="w-5 h-5 bg-checkbox_on rounded-[50%] cursor-pointer bg-cover relative"></div> */}
-                      <span className="ml-3">{list.content}</span>
+                      <div
+                        className={`w-5 h-5 rounded-[50%] cursor-pointer bg-cover ${list.done ? 'bg-checkbox_on' : 'bg-checkbox_off'}`}
+                        onClick={() => handlecompletedTodo(list.id)}
+                      ></div>
+                      <span
+                        className={`ml-3 ${list.done ? 'line-through text-zinc-400' : ''}`}
+                      >
+                        {list.content}{' '}
+                      </span>
                     </div>
 
                     <div className="flex">
