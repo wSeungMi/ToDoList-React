@@ -15,6 +15,7 @@ const TodoList = () => {
   ]);
   const [taskText, setTaskText] = useState('');
   const [editingId, setEditingId] = useState('');
+  const [updatedContent, setUpdatedContent] = useState('');
 
   const handleAddTodo = () => {
     setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
@@ -29,7 +30,11 @@ const TodoList = () => {
     }
   };
 
-  const handleUpdateTodo = (updatedContent, updatedId) => {
+  const handleModifyTodo = (content) => {
+    setUpdatedContent(content);
+  };
+
+  const handleUpdateTodo = (updatedId) => {
     const updatedTodo = todo.map((item) => {
       if (item.id === updatedId) {
         return { ...item, content: updatedContent };
@@ -37,6 +42,12 @@ const TodoList = () => {
       return item;
     });
     setTodo(updatedTodo);
+    setEditingId('');
+  };
+
+  const handleEdtingReset = () => {
+    setUpdatedContent('');
+    setEditingId('');
   };
 
   const handleDeleteTodo = (delId) => {
@@ -77,10 +88,8 @@ const TodoList = () => {
                   <>
                     <input
                       type="text"
-                      value={list.content}
-                      onChange={(e) =>
-                        handleUpdateTodo(e.target.value, list.id)
-                      }
+                      defaultValue={list.content}
+                      onChange={(e) => handleModifyTodo(e.target.value)}
                       className="pb-0.5 border-b-[1.4px] border-[#9070c0] w-full "
                     />
 
@@ -90,12 +99,12 @@ const TodoList = () => {
                           icon={faCheck}
                           size="xl"
                           className="hover:text-zinc-500"
-                          onClick={() => setEditingId(list.id)}
+                          onClick={() => handleUpdateTodo(list.id)}
                         />
                       </button>
                       <button
                         className="cursor-pointer pl-2.5"
-                        onClick={() => handleDeleteTodo(list.id)}
+                        onClick={() => handleEdtingReset(list.id)}
                       >
                         <FontAwesomeIcon
                           icon={faXmark}
