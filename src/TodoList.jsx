@@ -9,6 +9,7 @@ const TodoList = () => {
     { id: 2, content: '리액트 투두 만들기', done: false },
   ]);
   const [taskText, setTaskText] = useState('');
+  const [editingId, setEditingId] = useState('');
 
   const handleAddTodo = () => {
     setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
@@ -21,6 +22,16 @@ const TodoList = () => {
       setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
       setTaskText('');
     }
+  };
+
+  const handleUpdateTodo = (updatedContent, updatedId) => {
+    const updatedTodo = todo.map((item) => {
+      if (item.id === updatedId) {
+        return { ...item, content: updatedContent };
+      }
+      return item;
+    });
+    setTodo(updatedTodo);
   };
 
   const handleDeleteTodo = (delId) => {
@@ -54,13 +65,28 @@ const TodoList = () => {
           {todo.map((list) => (
             <li
               key={list.id}
-              className="p-1.5 text-base cursor-pointer select-none flex justify-between items-center"
+              className="p-1.5 text-base cursor-pointer select-none flex justify-between items-center "
             >
-              <div className="flex items-center">
-                <div className="w-5 h-5 bg-checkbox_off rounded-[50%] cursor-pointer bg-cover"></div>
-                {/* TODO: 할일 완료 기능 구현시 사용 예정 */}
-                {/* <div className="w-5 h-5 bg-checkbox_on rounded-[50%] cursor-pointer bg-cover relative"></div> */}
-                <span className="ml-3">{list.content}</span>
+              <div className="flex items-center w-full">
+                {editingId === list.id ? (
+                  <>
+                    <input
+                      type="text"
+                      value={list.content}
+                      onChange={(e) =>
+                        handleUpdateTodo(e.target.value, list.id)
+                      }
+                      className="pb-0.5 border-b-[1.4px] border-[#9070c0] w-full"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div className="w-5 h-5 bg-checkbox_off rounded-[50%] cursor-pointer bg-cover"></div>
+                    {/* TODO: 할일 완료 기능 구현시 사용 예정 */}
+                    {/* <div className="w-5 h-5 bg-checkbox_on rounded-[50%] cursor-pointer bg-cover relative"></div> */}
+                    <span className="ml-3">{list.content}</span>
+                  </>
+                )}
               </div>
 
               <div className="flex content-center items-center pl-4">
@@ -68,6 +94,7 @@ const TodoList = () => {
                   <FontAwesomeIcon
                     icon={faPenToSquare}
                     className="hover:text-zinc-500"
+                    onClick={() => setEditingId(list.id)}
                   />
                 </button>
                 <button
