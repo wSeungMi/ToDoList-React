@@ -6,18 +6,23 @@ import {
   faPenToSquare,
   faCheck,
   faTrash,
+  faChevronLeft,
+  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 
+function initStoreTodos() {
+  const getTodos = JSON.parse(localStorage.getItem('my-todo'));
+  return getTodos ? getTodos : [];
+}
+
 const TodoList = () => {
-  const [todo, setTodo] = useState(() => initStoreTodos());
+  const [todo, setTodo] = useState(initStoreTodos);
   const [taskText, setTaskText] = useState('');
   const [editingId, setEditingId] = useState('');
   const [updatedContent, setUpdatedContent] = useState('');
-
-  function initStoreTodos() {
-    const getTodos = JSON.parse(localStorage.getItem('my-todo'));
-    return getTodos ? getTodos : [];
-  }
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
 
   const handleAddTodo = () => {
     if (!taskText) {
@@ -98,7 +103,7 @@ const TodoList = () => {
 
   return (
     <div className="w-full min-h-screen bg-gradient-purple flex flex-col justify-center items-center">
-      <section className="min-w-[600px] h-[540px] my-0 mx-auto py-7 px-8 bg-white border rounded-3xl">
+      <section className="min-w-[600px] h-[580px] my-0 mx-auto py-7 px-8 bg-white border rounded-3xl">
         <h1 className="mb-2.5 text-[24px] font-LINESeedKR-Bd">To Do List</h1>
         <h2 className="ir">투두리스트 입력창</h2>
         <div className="h-[50px]  mb-2.5 flex justify-between bg-[#eaeaea] rounded-3xl text-base">
@@ -119,7 +124,7 @@ const TodoList = () => {
           </button>
         </div>
         <ul id="todo_list" className="pt-1 px-3.5 pb-1.5">
-          {todo.map((list) => (
+          {todo.slice(offset, offset + limit).map((list) => (
             <li
               key={list.id}
               className="px-1.5 py-2 text-base cursor-pointer select-none flex items-center "
@@ -196,9 +201,63 @@ const TodoList = () => {
             </li>
           ))}
         </ul>
+        <div>
+          <Pagination />
+        </div>
       </section>
     </div>
   );
 };
 
 export default TodoList;
+
+function Pagination(params) {
+  return (
+    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+      <div className="flex m-auto">
+        <nav
+          className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+          aria-label="Pagination"
+        >
+          <a
+            href="#"
+            className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+          >
+            <span className="sr-only">Previous</span>
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              size="lg"
+              className="h-5 w-5"
+              aria-hidden="true"
+            />
+          </a>
+          <a
+            href="#"
+            aria-current="page"
+            className="relative z-10 inline-flex items-center text-white bg-[#9070c0] hover:bg-[#584278] px-4 py-2 text-sm font-semibold"
+          >
+            1
+          </a>
+          <a
+            href="#"
+            className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 "
+          >
+            2
+          </a>
+          <a
+            href="#"
+            className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+          >
+            <span className="sr-only">Next</span>
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              size="lg"
+              className="h-5 w-5"
+              aria-hidden="true"
+            />
+          </a>
+        </nav>
+      </div>
+    </div>
+  );
+}
