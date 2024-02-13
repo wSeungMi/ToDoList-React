@@ -31,19 +31,25 @@ const TodoList = () => {
     if (e.key === 'Enter' && action === 'add') {
       handleAddTodo();
     } else if (e.key === 'Enter' && action === 'edit') {
-      handleUpdateTodo(editId);
+      handleUpdatedTodo(editId);
     }
+  };
+
+  const onEdit = (id, prevContent) => {
+    setEditingId(id);
+    setUpdatedContent(prevContent);
   };
 
   const handleModifyTodo = (content) => {
     setUpdatedContent(content);
   };
 
-  const handleUpdateTodo = (updatedId) => {
+  const handleUpdatedTodo = (updatedId) => {
     if (!updatedContent) {
       alert('할일을 입력해주세요🙌!');
       return;
     }
+
     const updatedTodo = todo.map((item) => {
       if (item.id === updatedId) {
         return { ...item, content: updatedContent };
@@ -81,7 +87,7 @@ const TodoList = () => {
             placeholder="할일을 입력해주세요."
             value={taskText}
             onChange={(e) => setTaskText(e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, 'add')}
+            onKeyDown={(e) => handleKeyDown(e, 'add', '')}
             className="flex-1 p-5  font-LINESeedKR-Rg bg-transparent placeholder:text-gray-500"
           />
           <button
@@ -103,7 +109,7 @@ const TodoList = () => {
                   <>
                     <input
                       type="text"
-                      defaultValue={list.content}
+                      value={updatedContent}
                       onChange={(e) => handleModifyTodo(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, 'edit', list.id)}
                       className="pb-0.5 border-b-[1.4px] border-[#9070c0] w-full "
@@ -115,7 +121,7 @@ const TodoList = () => {
                           icon={faCheck}
                           size="xl"
                           className="hover:text-zinc-500"
-                          onClick={() => handleUpdateTodo(list.id)}
+                          onClick={() => handleUpdatedTodo(list.id)}
                         />
                       </button>
                       <button
@@ -145,7 +151,7 @@ const TodoList = () => {
                           icon={faPenToSquare}
                           size="lg"
                           className="hover:text-zinc-500"
-                          onClick={() => setEditingId(list.id)}
+                          onClick={() => onEdit(list.id, list.content)}
                         />
                       </button>
                       <button
