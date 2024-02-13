@@ -22,11 +22,12 @@ const TodoList = () => {
     setTaskText('');
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e, action, editId) => {
     if (e.nativeEvent.isComposing) return;
-    if (e.key === 'Enter') {
-      setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
-      setTaskText('');
+    if (e.key === 'Enter' && action === 'add') {
+      handleAddTodo();
+    } else if (e.key === 'Enter' && action === 'edit') {
+      handleUpdateTodo(editId);
     }
   };
 
@@ -66,7 +67,7 @@ const TodoList = () => {
             placeholder="할일을 입력해주세요."
             value={taskText}
             onChange={(e) => setTaskText(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(e) => handleKeyDown(e, 'add')}
             className="flex-1 p-5  font-LINESeedKR-Rg bg-transparent placeholder:text-gray-500"
           />
           <button
@@ -90,6 +91,7 @@ const TodoList = () => {
                       type="text"
                       defaultValue={list.content}
                       onChange={(e) => handleModifyTodo(e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e, 'edit', list.id)}
                       className="pb-0.5 border-b-[1.4px] border-[#9070c0] w-full "
                     />
 
