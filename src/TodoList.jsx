@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -9,13 +9,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const TodoList = () => {
-  const [todo, setTodo] = useState([
-    { id: 1, content: '자바스크립트 공부하기', done: false },
-    { id: 2, content: '리액트 투두 만들기', done: true },
-  ]);
+  const [todo, setTodo] = useState(() => initStoreTodos());
   const [taskText, setTaskText] = useState('');
   const [editingId, setEditingId] = useState('');
   const [updatedContent, setUpdatedContent] = useState('');
+
+  function initStoreTodos() {
+    const getTodos = JSON.parse(localStorage.getItem('my-todo'));
+    return getTodos ? getTodos : [];
+  }
 
   const handleAddTodo = () => {
     if (!taskText) {
@@ -85,6 +87,14 @@ const TodoList = () => {
     });
     setTodo(isCompleted);
   };
+
+  useEffect(() => {
+    localStorage.setItem('my-todo', JSON.stringify(todo));
+
+    if (todo.length === 0) {
+      localStorage.removeItem('my-todo');
+    }
+  }, [todo]);
 
   return (
     <div className="w-full min-h-screen bg-gradient-purple flex flex-col justify-center items-center">
@@ -156,7 +166,7 @@ const TodoList = () => {
                       <span
                         className={`ml-3 ${list.done ? 'line-through text-zinc-400' : ''}`}
                       >
-                        {list.content}{' '}
+                        {list.content}
                       </span>
                     </div>
 
