@@ -20,9 +20,11 @@ const TodoList = () => {
   const [taskText, setTaskText] = useState('');
   const [editingId, setEditingId] = useState('');
   const [updatedContent, setUpdatedContent] = useState('');
-  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
+  const limit = 10;
   const offset = (page - 1) * limit;
+
+  console.log('offset', offset);
 
   const handleAddTodo = () => {
     if (!taskText) {
@@ -81,6 +83,11 @@ const TodoList = () => {
 
     const filteredData = todo.filter((item) => item.id != delId);
     setTodo(filteredData);
+
+    // 현재 페이지의 마지막 항목이 삭제되었을 때 offset 업데이트
+    if (filteredData.length === offset && offset > 0) {
+      setPage(page - 1); // 현재 페이지가 1페이지가 아니라면 이전 페이지로 이동
+    }
   };
 
   const handlecompletedTodo = (doneId) => {
@@ -239,7 +246,7 @@ function Pagination({ total, limit, page, setPage }) {
               aria-hidden="true"
             />
           </button>
-          {Array(pageNums)
+          {Array(Math.max(pageNums, 1))
             .fill()
             .map((_, i) => (
               <button
