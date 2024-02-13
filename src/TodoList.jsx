@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faPenToSquare,
+  faCheck,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 
 const TodoList = () => {
   const [todo, setTodo] = useState([
@@ -65,9 +70,9 @@ const TodoList = () => {
           {todo.map((list) => (
             <li
               key={list.id}
-              className="p-1.5 text-base cursor-pointer select-none flex justify-between items-center "
+              className="px-1.5 py-2 text-base cursor-pointer select-none flex items-center "
             >
-              <div className="flex items-center w-full">
+              <div className="flex justify-between w-full">
                 {editingId === list.id ? (
                   <>
                     <input
@@ -76,37 +81,61 @@ const TodoList = () => {
                       onChange={(e) =>
                         handleUpdateTodo(e.target.value, list.id)
                       }
-                      className="pb-0.5 border-b-[1.4px] border-[#9070c0] w-full"
+                      className="pb-0.5 border-b-[1.4px] border-[#9070c0] w-full "
                     />
+
+                    <div className="flex">
+                      <button className="cursor-pointer pl-4">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          size="xl"
+                          className="hover:text-zinc-500"
+                          onClick={() => setEditingId(list.id)}
+                        />
+                      </button>
+                      <button
+                        className="cursor-pointer pl-2.5"
+                        onClick={() => handleDeleteTodo(list.id)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faXmark}
+                          size="xl"
+                          className="hover:text-zinc-500"
+                        />
+                      </button>
+                    </div>
                   </>
                 ) : (
                   <>
-                    <div className="w-5 h-5 bg-checkbox_off rounded-[50%] cursor-pointer bg-cover"></div>
-                    {/* TODO: 할일 완료 기능 구현시 사용 예정 */}
-                    {/* <div className="w-5 h-5 bg-checkbox_on rounded-[50%] cursor-pointer bg-cover relative"></div> */}
-                    <span className="ml-3">{list.content}</span>
+                    <div className="flex flex-row">
+                      <div className="w-5 h-5 bg-checkbox_off rounded-[50%] cursor-pointer bg-cover"></div>
+                      {/* TODO: 할일 완료 기능 구현시 사용 예정 */}
+                      {/* <div className="w-5 h-5 bg-checkbox_on rounded-[50%] cursor-pointer bg-cover relative"></div> */}
+                      <span className="ml-3">{list.content}</span>
+                    </div>
+
+                    <div className="flex">
+                      <button className="cursor-pointer pl-4">
+                        <FontAwesomeIcon
+                          icon={faPenToSquare}
+                          size="lg"
+                          className="hover:text-zinc-500"
+                          onClick={() => setEditingId(list.id)}
+                        />
+                      </button>
+                      <button
+                        className="cursor-pointer pl-3"
+                        onClick={() => handleDeleteTodo(list.id)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          size="lg"
+                          className="hover:text-zinc-500"
+                        />
+                      </button>
+                    </div>
                   </>
                 )}
-              </div>
-
-              <div className="flex content-center items-center pl-4">
-                <button className="cursor-pointer pl-4">
-                  <FontAwesomeIcon
-                    icon={faPenToSquare}
-                    className="hover:text-zinc-500"
-                    onClick={() => setEditingId(list.id)}
-                  />
-                </button>
-                <button
-                  className="cursor-pointer pl-3"
-                  onClick={() => handleDeleteTodo(list.id)}
-                >
-                  <FontAwesomeIcon
-                    icon={faXmark}
-                    size="xl"
-                    className="hover:text-zinc-500"
-                  />
-                </button>
               </div>
             </li>
           ))}
