@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -23,8 +23,10 @@ const TodoList = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
   const offset = (page - 1) * limit;
-
-  console.log('offset', offset);
+  const inputFocusRef = useRef({
+    add: null,
+    edit: null,
+  });
 
   const handleAddTodo = () => {
     if (!taskText) {
@@ -49,6 +51,16 @@ const TodoList = () => {
     setUpdatedContent(prevContent);
   };
 
+  useEffect(() => {
+    if (inputFocusRef.current.add) {
+      inputFocusRef.current.add.focus();
+    }
+    if (inputFocusRef.current.edit) {
+      // 추가 input 요소에 포커스 설정
+      inputFocusRef.current.edit.focus();
+    }
+  }, [editingId, taskText]);
+
   const handleModifyTodo = (content) => {
     setUpdatedContent(content);
   };
@@ -65,6 +77,7 @@ const TodoList = () => {
       }
       return item;
     });
+
     setTodo(updatedTodo);
     setEditingId('');
   };
@@ -118,6 +131,7 @@ const TodoList = () => {
             type="text"
             placeholder="할일을 입력해주세요."
             value={taskText}
+            ref={(el) => (inputFocusRef.current.add = el)}
             onChange={(e) => setTaskText(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e, 'add', '')}
             className="flex-1 p-5  font-LINESeedKR-Rg bg-transparent placeholder:text-gray-500"
@@ -142,6 +156,7 @@ const TodoList = () => {
                     <input
                       type="text"
                       value={updatedContent}
+                      ref={(el) => (inputFocusRef.current.edit = el)}
                       onChange={(e) => handleModifyTodo(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, 'edit', list.id)}
                       className="pb-0.5 border-b-[1.4px] border-[#9070c0] w-full "
