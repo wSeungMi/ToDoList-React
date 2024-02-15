@@ -23,10 +23,8 @@ const TodoList = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
   const offset = (page - 1) * limit;
-  const inputFocusRef = useRef({
-    add: null,
-    edit: null,
-  });
+  const addInputRef = useRef(null);
+  const editInputRef = useRef(null);
 
   const handleAddTodo = () => {
     if (!taskText) {
@@ -50,16 +48,6 @@ const TodoList = () => {
     setEditingId(id);
     setUpdatedContent(prevContent);
   };
-
-  useEffect(() => {
-    if (inputFocusRef.current.add) {
-      inputFocusRef.current.add.focus();
-    }
-    if (inputFocusRef.current.edit) {
-      // 추가 input 요소에 포커스 설정
-      inputFocusRef.current.edit.focus();
-    }
-  }, [editingId, taskText]);
 
   const handleModifyTodo = (content) => {
     setUpdatedContent(content);
@@ -121,6 +109,14 @@ const TodoList = () => {
     }
   }, [todo]);
 
+  useEffect(() => {
+    if (!editingId && addInputRef.current) {
+      addInputRef.current.focus();
+    } else if (editingId && editInputRef.current) {
+      editInputRef.current.focus();
+    }
+  }, [editingId, taskText]);
+
   return (
     <div className="w-full min-h-screen bg-gradient-purple flex flex-col justify-center items-center">
       <section className="min-w-[600px] h-[580px] my-0 mx-auto py-7 px-8 bg-white border rounded-3xl">
@@ -131,7 +127,7 @@ const TodoList = () => {
             type="text"
             placeholder="할일을 입력해주세요."
             value={taskText}
-            ref={(el) => (inputFocusRef.current.add = el)}
+            ref={addInputRef}
             onChange={(e) => setTaskText(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e, 'add', '')}
             className="flex-1 p-5  font-LINESeedKR-Rg bg-transparent placeholder:text-gray-500"
@@ -156,7 +152,7 @@ const TodoList = () => {
                     <input
                       type="text"
                       value={updatedContent}
-                      ref={(el) => (inputFocusRef.current.edit = el)}
+                      ref={editInputRef}
                       onChange={(e) => handleModifyTodo(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, 'edit', list.id)}
                       className="pb-0.5 border-b-[1.4px] border-[#9070c0] w-full "
