@@ -13,16 +13,16 @@ export default function TodoCreate({ onCreate }) {
     setTaskText('');
   };
 
-  const handleKeyDown = (e, action) => {
+  const handleKeyDown = (e) => {
     if (e.nativeEvent.isComposing) return;
-    if (e.key === 'Enter' && action === 'add') {
+    if (e.key === 'Enter' && taskText) {
       onCreate(taskText);
       setTaskText('');
     }
   };
 
   useEffect(() => {
-    if (addInputRef.current) {
+    if (taskText && addInputRef.current) {
       addInputRef.current.focus();
     }
   }, [taskText]);
@@ -37,7 +37,7 @@ export default function TodoCreate({ onCreate }) {
           value={taskText}
           ref={addInputRef}
           onChange={(e) => setTaskText(e.target.value)}
-          onKeyDown={(e) => handleKeyDown(e, 'add', '')}
+          onKeyDown={(e) => handleKeyDown(e)}
           className="flex-1 p-5  font-LINESeedKR-Rg bg-transparent placeholder:text-gray-500"
         />
         <button
