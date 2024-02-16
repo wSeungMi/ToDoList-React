@@ -21,6 +21,14 @@ function App() {
     setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
   };
 
+  const onCompleted = (targetId) => {
+    const isCompleted = todo.map((item) =>
+      item.id === targetId ? { ...item, done: !item.done } : item,
+    );
+
+    setTodo(isCompleted);
+  };
+
   const onRemove = (targetId) => {
     const filteredData = todo.filter((item) => item.id != targetId);
     setTodo(filteredData);
@@ -53,6 +61,7 @@ function App() {
           <TodoCreate onCreate={onCreate} />
           <TodoList
             todoList={todo}
+            onCompleted={onCompleted}
             onEdit={onEdit}
             onRemove={onRemove}
             offset={offset}

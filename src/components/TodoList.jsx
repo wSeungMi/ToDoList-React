@@ -2,6 +2,7 @@ import TodoItem from './TodoItem';
 
 export default function TodoList({
   todoList,
+  onCompleted,
   onEdit,
   onRemove,
   offset,
@@ -14,6 +15,7 @@ export default function TodoList({
           <TodoItem
             key={list.id}
             {...list}
+            onCompleted={onCompleted}
             onEdit={onEdit}
             onRemove={onRemove}
           />

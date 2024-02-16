@@ -6,10 +6,21 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
-export default function TodoItem({ onEdit, onRemove, done, content, id }) {
+export default function TodoItem({
+  onCompleted,
+  onEdit,
+  onRemove,
+  done,
+  content,
+  id,
+}) {
   const [isEdit, setIsEdit] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(content);
   const editInputRef = useRef(null);
+
+  const handleCompleted = () => {
+    onCompleted(id);
+  };
 
   const toggleIsEdit = () => {
     setIsEdit(!isEdit);
@@ -94,6 +105,7 @@ export default function TodoItem({ onEdit, onRemove, done, content, id }) {
               <div className="flex flex-row">
                 <div
                   className={`w-5 h-5 rounded-[50%] cursor-pointer bg-cover ${done ? 'bg-checkbox_on' : 'bg-checkbox_off'}`}
+                  onClick={handleCompleted}
                 ></div>
                 <span
                   className={`ml-3 ${done ? 'line-through text-zinc-400' : ''}`}
