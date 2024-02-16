@@ -16,6 +16,14 @@ function App() {
     setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
   };
 
+  const onDelete = (targetId) => {
+    const isConfirm = window.confirm('정말 삭제하시겠습니까?');
+    if (!isConfirm) return;
+
+    const filteredData = todo.filter((item) => item.id != targetId);
+    setTodo(filteredData);
+  };
+
   useEffect(() => {
     localStorage.setItem('my-todo', JSON.stringify(todo));
 
@@ -29,7 +37,7 @@ function App() {
       <div className="w-full min-h-screen bg-gradient-purple flex flex-col justify-center items-center">
         <TodoTemplate>
           <TodoCreate onCreate={onCreate} />
-          <TodoList todoList={todo} />
+          <TodoList todoList={todo} onDelete={onDelete} />
         </TodoTemplate>
       </div>
     </>
