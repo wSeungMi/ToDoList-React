@@ -4,8 +4,6 @@ import {
   faPenToSquare,
   faCheck,
   faTrash,
-  faChevronLeft,
-  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 export default function TodoItem({ onEdit, onRemove, done, content, id }) {

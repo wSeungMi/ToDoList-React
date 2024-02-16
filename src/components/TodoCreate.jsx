@@ -21,7 +21,7 @@ export default function TodoCreate({ onCreate }) {
   };
 
   useEffect(() => {
-    if (taskText && addInputRef.current) {
+    if (addInputRef.current) {
       addInputRef.current.focus();
     }
   }, [taskText]);
