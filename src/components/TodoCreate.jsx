@@ -15,9 +15,8 @@ export default function TodoCreate({ onCreate }) {
 
   const handleKeyDown = (e) => {
     if (e.nativeEvent.isComposing) return;
-    if (e.key === 'Enter' && taskText) {
-      onCreate(taskText);
-      setTaskText('');
+    if (e.key === 'Enter') {
+      handleSubmit();
     }
   };
 
