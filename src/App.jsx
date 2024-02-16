@@ -16,12 +16,16 @@ function App() {
     setTodo([...todo, { id: uuid(), content: taskText, done: false }]);
   };
 
-  const onDelete = (targetId) => {
-    const isConfirm = window.confirm('정말 삭제하시겠습니까?');
-    if (!isConfirm) return;
-
+  const onRemove = (targetId) => {
     const filteredData = todo.filter((item) => item.id != targetId);
     setTodo(filteredData);
+  };
+
+  const onEdit = (targetId, newContent) => {
+    const updatedTodo = todo.map((item) =>
+      item.id === targetId ? { ...item, content: newContent } : item,
+    );
+    setTodo(updatedTodo);
   };
 
   useEffect(() => {
@@ -37,7 +41,7 @@ function App() {
       <div className="w-full min-h-screen bg-gradient-purple flex flex-col justify-center items-center">
         <TodoTemplate>
           <TodoCreate onCreate={onCreate} />
-          <TodoList todoList={todo} onDelete={onDelete} />
+          <TodoList todoList={todo} onEdit={onEdit} onRemove={onRemove} />
         </TodoTemplate>
       </div>
     </>
