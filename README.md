@@ -1,7 +1,7 @@
 # ToDoList-React
 
 <div align="center">
-  <img width="100%" alt="preview_img" src="https://github.com/wSeungMi/ToDoList-JS/assets/104605709/daa212f0-0df0-4e32-9afa-86ad5387f69f">
+  <img width="100%" alt="preview_img" src="https://github.com/wSeungMi/ToDoList-React/assets/104605709/0fc67985-50b5-4384-940c-55a4eb25ec6f">
 </div>
 
 <a href="https://wseungmi.github.io/ToDoList-React/" target="_blank">
@@ -25,6 +25,7 @@
 - 할일 목록 조회
 - 할일 완료
 - 페이지네이션
+- 현재 날짜 및 요일 표시
 
 ## 📑 커밋 컨벤션
 
