@@ -6,7 +6,6 @@ import {
 export default function Pagination({ total, limit, page, setPage }) {
   const pageNums = Math.ceil(total / limit);
 
-  console.log('page', page, 'nums', pageNums);
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex m-auto">
